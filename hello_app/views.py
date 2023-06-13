@@ -4,10 +4,15 @@ from . import app
 import pandas as pd
 from os import environ
 from sqlalchemy import create_engine
+import re
 
 def recup_data(url):
     print('recup', url)
     df = pd.read_csv(url)
+
+    cols = [re.sub(r"[()]", "_", c) for c in list(df.columns)]
+    df.columns = cols
+
     print(df.head())
     print(df.shape)
     df.to_sql('SEATTLE', engine, if_exists='replace', index=False)
