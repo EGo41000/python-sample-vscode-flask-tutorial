@@ -1,10 +1,12 @@
 from datetime import datetime
 from flask import Flask, render_template
-from . import app
+#from . import app
 import pandas as pd
 from os import environ
 from sqlalchemy import create_engine
 import re
+
+app = Flask(__name__)    # Create an instance of the class for our use
 
 def recup_data(url):
     print('recup', url)
@@ -49,3 +51,6 @@ def hello_there(name = None):
 @app.route("/api/data")
 def get_data():
     return app.send_static_file("data.json")
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0')

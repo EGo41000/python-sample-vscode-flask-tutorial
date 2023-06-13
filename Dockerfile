@@ -24,14 +24,22 @@ ENV STATIC_URL /hello_app/static
 # Set the folder where uwsgi looks for the app
 WORKDIR /hello_app
 
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY hello_app/ .
+
+
 # Copy the app contents to the image
-COPY . /hello_app
+#COPY . /hello_app
 
 # If you have additional requirements beyond Flask (which is included in the
 # base image), generate a requirements.txt file with pip freeze and uncomment
 # the next three lines.
-COPY requirements.txt /
-RUN pip install --no-cache-dir -U pip
-RUN pip install --no-cache-dir -r /requirements.txt
+#COPY requirements.txt /
+#RUN pip install --no-cache-dir -U pip
+#RUN pip install --no-cache-dir -r /requirements.txt
 
-CMD [ "FLASK_APP=webap", flask", "run" ]
+#ENV FLASK_APP webapp
+#CMD [ "flask", "run" ]
+CMD [ "python3", "views.py"]
