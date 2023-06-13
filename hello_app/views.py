@@ -15,14 +15,15 @@ def recup_data(url):
 
     print(df.head())
     print(df.shape)
-    df.to_sql('SEATTLE', engine, if_exists='replace', index=False)
+    df.to_sql('SEATTLE', engine, if_exists='append', index=False)
 
 db_uri = environ.get('BDD_URI')
 engine = create_engine(db_uri, echo=True)
 
-#URL='https://data.seattle.gov/api/views/2bpz-gwpy/rows.csv?accessType=DOWNLOAD' # 2016
+URL='https://data.seattle.gov/api/views/2bpz-gwpy/rows.csv?accessType=DOWNLOAD' # 2016
+#recup_data(URL)
 URL='https://data.seattle.gov/api/views/qxjw-iwsh/rows.csv?accessType=DOWNLOAD' # 2017
-recup_data(URL)
+#recup_data(URL)
 
 @app.route("/")
 def home():
