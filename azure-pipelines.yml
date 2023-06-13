@@ -28,5 +28,5 @@ steps:
 
 - script: |
     pip install pytest pytest-azurepipelines
-    pytest
+    BDD_URI=sqlite:///test.sqlite pytest
   displayName: 'pytest'
