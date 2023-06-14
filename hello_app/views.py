@@ -3,7 +3,7 @@ from flask import Flask, render_template
 #from . import app
 import pandas as pd
 from os import environ
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 import re
 
 app = Flask(__name__)    # Create an instance of the class for our use
@@ -21,6 +21,9 @@ def recup_data(url):
 
 db_uri = environ.get('BDD_URI')
 engine = create_engine(db_uri, echo=True)
+print('engine :', engine)
+#df=pd.read_sql("""SELECT * FROM "SEATTLE" LIMIT 10""", con=engine)
+#print(df)
 
 URL='https://data.seattle.gov/api/views/2bpz-gwpy/rows.csv?accessType=DOWNLOAD' # 2016
 #recup_data(URL)
@@ -29,7 +32,10 @@ URL='https://data.seattle.gov/api/views/qxjw-iwsh/rows.csv?accessType=DOWNLOAD' 
 
 @app.route("/")
 def home():
-    return render_template("home.html")
+    print('home...')
+    n=0
+    df=pd.read_sql("""SELECT count(*) AS N FROM "SEATTLE" """, con=engine)
+    return render_template("home.html", n=df)
 
 @app.route("/about/")
 def about():
