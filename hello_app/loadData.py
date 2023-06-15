@@ -14,11 +14,11 @@ print('engine :', engine)
 #URL='https://data.seattle.gov/api/views/qxjw-iwsh/rows.csv?accessType=DOWNLOAD' # 2017
 
 data=[
-    #['2015', 'h7rm-fz6m'],
-    #['2016', '2bpz-gwpy'],
-    #['2017', 'qxjw-iwsh'],
-    #['2018', 'ypch-zswb'],
-    #['2019', '3th6-ticf'],
+    ['2015', 'h7rm-fz6m'],
+    ['2016', '2bpz-gwpy'],
+    ['2017', 'qxjw-iwsh'],
+    ['2018', 'ypch-zswb'],
+    ['2019', '3th6-ticf'],
     ['2020', 'auez-gz8p'],
     ['2021', 'bfsh-nrm6'],
 ]
@@ -32,20 +32,24 @@ for year,code in data:
         print(conn)
         conn.execute(text(f"""DELETE FROM "SEATTLE" WHERE "DataYear"='{year}'  """))
 
-    cols = [re.sub(r"[()]", "_", c).replace(' ', '').replace('TotalGhgEmissions', 'TotalGHGEmissions') for c in list(df.columns)]
+    cols = [re.sub(r"[()]", "_", c)
+            .replace(' ', '')
+            .replace('TotalGhgEmissions', 'TotalGHGEmissions')
+            .replace('BuildingName', 'PropertyName')
+            for c in list(df.columns)]
     df.columns = cols
     print(cols)
 
     if year=='2015':
         df.drop(['Location', 'OtherFuelUse_kBtu_', 'GHGEmissions_MetricTonsCO2e_', 'GHGEmissions_MetricTonsCO2e_', 'GHGEmissionsIntensity_kgCO2e/ft2_', 'Comment'], axis=1, inplace=True)
     if year=='2018':
-        df.drop(['BuildingName', 'EPABuildingSubTypeName', 'ComplianceIssue'], axis=1, inplace=True)
+        df.drop(['EPABuildingSubTypeName', 'ComplianceIssue'], axis=1, inplace=True)
     if year=='2019':
-        df.drop(['BuildingName', 'ComplianceIssue', 'EPAPropertyType'], axis=1, inplace=True)
+        df.drop(['ComplianceIssue', 'EPAPropertyType'], axis=1, inplace=True)
     if year=='2020':
-        df.drop(['BuildingName', 'ComplianceIssue', 'EPAPropertyType'], axis=1, inplace=True)
+        df.drop(['ComplianceIssue', 'EPAPropertyType'], axis=1, inplace=True)
     if year=='2021':
-        df.drop(['BuildingName', 'ComplianceIssue', 'EPAPropertyType'], axis=1, inplace=True)
+        df.drop(['ComplianceIssue', 'EPAPropertyType'], axis=1, inplace=True)
 
     df.drop_duplicates(subset=['OSEBuildingID'], inplace=True)
 
